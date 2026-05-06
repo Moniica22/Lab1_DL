@@ -1,0 +1,16 @@
+{
+    "variation": 10,
+    "source_folder": "Variation_10.2",
+    "window_size": 50,
+    "dilations": [
+        1,
+        2,
+        4,
+        8,
+        16
+    ],
+    "channels": 16,
+    "kernel_size": 3,
+    "lr": 0.001,
+    "dropout": 0.0
+}
