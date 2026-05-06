@@ -4,10 +4,10 @@ import os
 import numpy as np
 
 models = ["FeedForward", "Lstm", "Tcn"]
-models = ["Tcn"]
 
 def main():
 
+    # test_data = scipy.io.loadmat('Data/test_data.mat')
     test_data = scipy.io.loadmat('Data/fake_test.mat')
     y = test_data['pred_var']
 
