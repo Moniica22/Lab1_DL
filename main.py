@@ -2,25 +2,61 @@ import scipy
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 import os
 import numpy as np
+import matplotlib
+matplotlib.use("Agg")
+from matplotlib import pyplot as plt
 
 models = ["FeedForward", "Lstm", "Tcn"]
+
+def plot_predictions(predictions, y_true, model_name):
+    # fig, axes = plt.subplots(len(predictions), 1, figsize=(10, 12), sharex=True)
+
+    # axes = np.atleast_1d(axes)
+
+    for i, pred in enumerate(predictions):
+        plt.plot(pred,label = f"{model_name} Prediction {i+1}")
+        plt.plot(y_true,label = "True Values")
+        plt.title(f"Prediction {i+1} vs Ground truth")
+        plt.ylabel("Value")
+        plt.grid(True)
+        plt.legend(loc="upper right")
+        plt.xlabel("Sample")
+        plt.tight_layout()
+        plt.savefig(f"prediction_plots/{model_name}/{model_name}_predictions_{i+1}.png", dpi=150)
+        plt.close()
+    
+    print(f"Successfully plotted {len(predictions)} prediction{'s' if len(predictions) > 1 else ''} for model: {model_name}")
+    print(f"figures saved at: prediction_plots/{model_name}")
+
+    return
 
 def main():
 
     # test_data = scipy.io.loadmat('Data/test_data.mat')
     test_data = scipy.io.loadmat('Data/fake_test.mat')
     y = test_data['pred_var']
+    os.makedirs("prediction_plots", exist_ok=True)
 
     print("\n----Experimental Results for Each Model----\n")
     for model in models:
         folder = f"{model}/predictions"
-        for i, file in enumerate(os.listdir(folder)):
+        prediction_files = os.listdir(folder)
+        predictions = []
+        os.makedirs(f"prediction_plots/{model}", exist_ok=True)
+
+        print(f"Model Name: {model}")
+        print(f"\tTotal: {len(prediction_files)} predictions to evaluate")
+
+        
+        for i, file in enumerate(prediction_files):
             model_data = scipy.io.loadmat(f'{model}/predictions/{file}')
             model_preds = model_data['pred_var']
 
             # Check if needed to transpose
             if model_preds.shape == (1, 200):
                 model_preds = np.transpose(model_preds)
+            
+            predictions.append(model_preds)
 
             mae = mean_absolute_error(y, model_preds)
             mse = mean_squared_error(y, model_preds)
@@ -29,6 +65,9 @@ def main():
             print(f"MAE: {mae}")
             print(f"MSE: {mse}")
             print("-----")
+
+        plot_predictions(predictions=predictions, y_true=y, model_name=model)    
+
 
 
 
