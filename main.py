@@ -11,15 +11,16 @@ models = ["FeedForward", "Lstm", "Tcn"]
 def plot_predictions(predictions, y_true, model_name):
 
     for i, pred in enumerate(predictions):
-        plt.plot(pred,label = f"{model_name} Prediction {i+1}")
-        plt.plot(y_true,label = "True Values")
-        plt.title(f"Prediction {i+1} vs Ground truth")
-        plt.ylabel("Value")
+        plt.figure(figsize=(6.5, 3.0))
+        plt.plot(pred,label = f"{model_name} Prediction", linestyle="-")
+        plt.plot(y_true,label = "Ground Truth", linestyle="--")
+        plt.title(f"{model_name} Recursive Prediction vs Actual Test Samples")
+        plt.ylabel("Laser Measurement")
         plt.grid(True)
         plt.legend(loc="upper right")
-        plt.xlabel("Sample")
+        plt.xlabel("Time Samples")
         plt.tight_layout()
-        plt.savefig(f"prediction_plots/{model_name}/{model_name}_predictions_{i+1}.png", dpi=150)
+        plt.savefig(f"prediction_plots/{model_name}/{model_name}_predictions_{i+1}.png", dpi=150, bbox_inches="tight")
         plt.close()
     
     print(f"Successfully plotted {len(predictions)} prediction{'s' if len(predictions) > 1 else ''} for model: {model_name}")
