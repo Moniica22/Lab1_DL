@@ -9,9 +9,6 @@ from matplotlib import pyplot as plt
 models = ["FeedForward", "Lstm", "Tcn"]
 
 def plot_predictions(predictions, y_true, model_name):
-    # fig, axes = plt.subplots(len(predictions), 1, figsize=(10, 12), sharex=True)
-
-    # axes = np.atleast_1d(axes)
 
     for i, pred in enumerate(predictions):
         plt.plot(pred,label = f"{model_name} Prediction {i+1}")
@@ -32,9 +29,9 @@ def plot_predictions(predictions, y_true, model_name):
 
 def main():
 
-    # test_data = scipy.io.loadmat('Data/test_data.mat')
-    test_data = scipy.io.loadmat('Data/fake_test.mat')
-    y = test_data['pred_var']
+    test_data = scipy.io.loadmat('Data/Xtest.mat')
+    # test_data = scipy.io.loadmat('Data/fake_test.mat')
+    y = test_data['Xtest']
     os.makedirs("prediction_plots", exist_ok=True)
 
     print("\n----Experimental Results for Each Model----\n")
